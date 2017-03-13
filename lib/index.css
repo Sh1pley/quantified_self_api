@@ -39,3 +39,8 @@ button.forward {
 .green-text {
   color: green;
 }
+
+#total-list {
+  text-align: right;
+  font-size: 14px;
+}
