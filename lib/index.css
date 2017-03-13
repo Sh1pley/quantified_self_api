@@ -1,0 +1,33 @@
+.current-day {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.current-day section {
+  padding: 10px;
+  background: cornflowerblue;
+  width:50%;
+  color: white;
+  text-align: center;
+}
+
+button.back {
+  width: 0;
+  height: 0;
+  padding: 0;
+  background: transparent;
+  border-top: 30px solid transparent;
+  border-right: 60px solid cornflowerblue;
+  border-bottom: 30px solid transparent;
+}
+
+button.forward {
+   width: 0;
+  height: 0;
+  padding: 0;
+  background: transparent;
+  border-top: 30px solid transparent;
+  border-left: 60px solid cornflowerblue;
+  border-bottom: 30px solid transparent;
+}

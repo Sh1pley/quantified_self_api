@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.js"
+    integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+    crossorigin="anonymous"></script>
+  <script src="./vendor/moment.js"></script>
+  <script src="./lib/foods.js"></script>
+  <script src="./lib/common.js"></script>
+  <script src="./lib/index.js"></script>
+  <link type="text/css" rel="stylesheet" href="./lib/foods.css" >
+  <link type="text/css" rel="stylesheet" href="./lib/index.css" >
+  <link type="text/css" rel="stylesheet" href="./lib/common.css" >
+</head>
+<body>
+
+  <div class="current-day">
+    <button class="back"></button>
+    <section></section>
+    <button class="forward"></button>
+  </div>
+  
+  <div id="container">
+    
+    <table id="breakfast-list">
+      <h2>Breakfast</h2>
+      <thead>
+        <tr><th>Name</th><th>Calories</th></tr>
+      </thead>
+      <tbody>
+        <tr class="food-row">
+          <td class="food-name">Banana</td>
+          <td class="food-calories">30</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+        <tr class="food-row">
+          <td class="food-name">Apple</td>
+          <td class="food-calories">50</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+        <tr class="food-row">
+          <td class="food-name">Orange</td>
+          <td class="food-calories">60</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+      <tfoot>
+        <tr class="total-cal-row">
+          <th class="total-footer">Total Calories</th>
+          <th class="calorie-count">300</th>
+        </tr>
+        <tr class="remaining-cal-row">
+          <th class="total-footer">Remaining Calories</th>
+          <th class="remaining-count">300</th>
+        </tr>
+      </tfoot>
+      </tbody>
+    </table>
+
+     <table id="lunch-list">
+      <h2>Lunch</h2>
+      <thead>
+        <tr><th>Name</th><th>Calories</th></tr>
+      </thead>
+      <tbody>
+        <tr class="food-row">
+          <td class="food-name">Bread</td>
+          <td class="food-calories">100</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+        <tr class="food-row">
+          <td class="food-name">Cheese</td>
+          <td class="food-calories">150</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+        <tr class="food-row">
+          <td class="food-name">Lettuce</td>
+          <td class="food-calories">0</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+      <tfoot>
+        <tr class="total-cal-row">
+          <th class="total-footer">Total Calories</th>
+          <th class="calorie-count">300</th>
+        </tr>
+        <tr class="remaining-cal-row">
+          <th class="total-footer">Remaining Calories</th>
+          <th class="remaining-count">300</th>
+        </tr>
+      </tfoot>
+      </tbody>
+    </table>
+
+    <table id="snack-list">
+      <h2>Snack</h2>
+      <thead>
+        <tr><th>Name</th><th>Calories</th></tr>
+      </thead>
+      <tbody>
+        <tr class="food-row">
+          <td class="food-name">Pretzel Sticks</td>
+          <td class="food-calories">200</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+        <tr class="food-row">
+          <td class="food-name">Peanut Butter</td>
+          <td class="food-calories">150</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr>  
+      <tfoot>
+        <tr class="total-cal-row">
+          <th class="total-footer">Total Calories</th>
+          <th class="calorie-count">300</th>
+        </tr>
+        <tr class="remaining-cal-row">
+          <th class="total-footer">Remaining Calories</th>
+          <th class="remaining-count">300</th>
+        </tr>
+      </tfoot>
+      </tbody>
+    </table>
+
+    <table id="dinner-list">
+      <h2>Dinner</h2>
+      <thead>
+        <tr><th>Name</th><th>Calories</th></tr>
+      </thead>
+      <tbody>
+        <tr class="food-row">
+          <td class="food-name">Meat</td>
+          <td class="food-calories">250</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+        <tr class="food-row">
+          <td class="food-name">Potatoes</td>
+          <td class="food-calories">150</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+        <tr class="food-row">
+          <td class="food-name">Green Beans</td>
+          <td class="food-calories">60</td>
+          <td class="food-delete"><button>-</button></td>
+        </tr> 
+      <tfoot>
+        <tr class="total-cal-row">
+          <th class="total-footer">Total Calories</th>
+          <th class="calorie-count">300</th>
+        </tr>
+        <tr class="remaining-cal-row">
+          <th class="total-footer">Remaining Calories</th>
+          <th class="remaining-count">300</th>
+        </tr>
+      </tfoot>
+      </tbody>
+    </table>
+  </div>
+</body>
