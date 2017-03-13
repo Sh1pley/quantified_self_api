@@ -31,3 +31,11 @@ button.forward {
   border-left: 60px solid cornflowerblue;
   border-bottom: 30px solid transparent;
 }
+
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: green;
+}
