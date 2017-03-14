@@ -1,7 +1,18 @@
+#container { 
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: space-between;
+}
+
+.date-select {
+  display: flex;
+  justify-content: space-around;
+}
+
 .current-day {
   display: inline-flex;
   justify-content: space-between;
-  align-items: stretch;
 }
 
 .current-day section {
@@ -23,7 +34,7 @@ button.back {
 }
 
 button.forward {
-   width: 0;
+  width: 0;
   height: 0;
   padding: 0;
   background: transparent;
