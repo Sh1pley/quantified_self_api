@@ -69,6 +69,7 @@ button.back {
   background: transparent;
   border-top: 30px solid transparent;
   border-right: 60px solid cornflowerblue;
+  border-left: 30px solid transparent;
   border-bottom: 30px solid transparent;
 }
 
@@ -78,6 +79,7 @@ button.forward {
   padding: 0;
   background: transparent;
   border-top: 30px solid transparent;
+  border-right: 30px solid transparent;
   border-left: 60px solid cornflowerblue;
   border-bottom: 30px solid transparent;
 }

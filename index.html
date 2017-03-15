@@ -30,21 +30,6 @@
           <tr><th>Name</th><th>Calories</th></tr>
         </thead>
         <tbody>
-          <tr class="food-row">
-            <td class="food-name">Banana</td>
-            <td class="food-calories">30</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
-          <tr class="food-row">
-            <td class="food-name">Apple</td>
-            <td class="food-calories">50</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
-          <tr class="food-row">
-            <td class="food-name">Orange</td>
-            <td class="food-calories">60</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
         <tfoot>
           <tr class="total-cal-row">
             <th class="total-footer">Total Calories</th>
@@ -65,21 +50,6 @@
           <tr><th>Name</th><th>Calories</th></tr>
         </thead>
         <tbody>
-          <tr class="food-row">
-            <td class="food-name">Bread</td>
-            <td class="food-calories">100</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
-          <tr class="food-row">
-            <td class="food-name">Cheese</td>
-            <td class="food-calories">150</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
-          <tr class="food-row">
-            <td class="food-name">Lettuce</td>
-            <td class="food-calories">0</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
         <tfoot>
           <tr class="total-cal-row">
             <th class="total-footer">Total Calories</th>
@@ -99,17 +69,7 @@
         <thead>
           <tr><th>Name</th><th>Calories</th></tr>
         </thead>
-        <tbody>
-          <tr class="food-row">
-            <td class="food-name">Pretzel Sticks</td>
-            <td class="food-calories">200</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
-          <tr class="food-row">
-            <td class="food-name">Peanut Butter</td>
-            <td class="food-calories">150</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr>  
+        <tbody> 
         <tfoot>
           <tr class="total-cal-row">
             <th class="total-footer">Total Calories</th>
@@ -130,21 +90,7 @@
           <tr><th>Name</th><th>Calories</th></tr>
         </thead>
         <tbody>
-          <tr class="food-row">
-            <td class="food-name">Meat</td>
-            <td class="food-calories">250</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
-          <tr class="food-row">
-            <td class="food-name">Potatoes</td>
-            <td class="food-calories">150</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
-          <tr class="food-row">
-            <td class="food-name">Green Beans</td>
-            <td class="food-calories">60</td>
-            <td class="food-delete"><button>-</button></td>
-          </tr> 
+          
         <tfoot>
           <tr class="total-cal-row">
             <th class="total-footer">Total Calories</th>
@@ -186,10 +132,10 @@
     </div>
     <div class="meal_category">
       <label class="meal-type">Add Selected To
-        <button class='blue-oval'>Breakfast</button>
-        <button class='blue-oval'>Lunch</button>
-        <button class='blue-oval'>Snack</button>
-        <button class='blue-oval'>Dinner</button>
+        <button id='breakfast'class='blue-oval'>Breakfast</button>
+        <button id='lunch' class='blue-oval'>Lunch</button>
+        <button id='snack' class='blue-oval'>Snack</button>
+        <button id='dinner' class='blue-oval'>Dinner</button>
       </label>
     </div>
     <div class="food-filter">
@@ -199,12 +145,12 @@
         </label>
       </section>
     </div>
-    <div class="all-foods">
-      <table id="food-list">
+    <div>
+      <table id="diary-food-list">
         <thead>
           <tr><th class="check"></th><th>Name</th><th>Calories</th></tr>
         </thead>
-        <tbody id="diary-food-list">
+        <tbody>
         </tbody>
       </table>
     </div>
