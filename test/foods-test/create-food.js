@@ -1,7 +1,11 @@
 describe('#create-form', function() {
+  var $;
+
+  before(function(){
+    $ = document.getElementById("foods-frame").contentWindow.$;
+  })
 
   beforeEach(function() {
-    //Clear out all the things
     $('#food-list tbody').html('');
     $('#create-form input').val('');
     $('.validation-error').html('');
@@ -23,7 +27,7 @@ describe('#create-form', function() {
       assert.equal(caloriesValidationContent, "Please Enter Calories");
     });
 
-    it('will be nice to me if I do everything correctly', function() {
+    it('will clear fields after pressing add food', function() {
       $('#name-field input').val('Banana');
       $('#calories-field input').val('35');
       $('#add-food').click();
@@ -34,6 +38,5 @@ describe('#create-form', function() {
       var caloriesValidationContent = $("#calories-field .validation-error").text();
       assert.equal(caloriesValidationContent, "");
     });
-
   });
 });
