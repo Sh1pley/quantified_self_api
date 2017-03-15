@@ -5,6 +5,49 @@
   align-content: space-between;
 }
 
+th.total-container {
+  background: transparent;
+  font-size: 25px;
+  border: 0;
+  text-align: left;
+}
+
+th.check {
+  background: transparent;
+  border: 0;
+  width: 20px;
+}
+
+.food-filter {
+  align-content: center;
+}
+
+.all-foods {
+  display: flex;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+th.search-foods {
+  background: transparent;
+  border: 0;
+  width: 100%;
+}
+
+div.new-food {
+  padding-top: 15%;
+}
+
+button#blue-oval.create-food {
+  width: 300px;
+}
+
+.food-total {
+  display: flex;
+  justify-content: stretch;
+  align-content: flex-start;
+}
+
 .date-select {
   display: flex;
   justify-content: space-around;
