@@ -158,22 +158,53 @@
         </tbody>
       </table>
     </div>
-    <div>
-      <table id="total-list">
-        <h2>Totals</h2>
-        <tbody>
-          <tr>
-            <th>Goal Calories</th>
-            <th class="goal-calories"></th>
-          </tr> 
-          <tr>
-            <th>Calories Consumed</th>
-            <th class="calories-consumed"></th>
-          </tr> 
-          <tr>
-            <th>Remaining Calories</th>
-            <th class="remaining-count"></th>
-          </tr> 
+    <div class="food-total">
+      <div class="new-food">
+        <button class='create-food' id="blue-oval">Create Food</button>
+      </div>
+      <div>
+        <table id="total-list">
+          <thead>
+            <th class="total-container">Totals</th>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Goal Calories</th>
+              <th class="goal-calories"></th>
+            </tr> 
+            <tr>
+              <th>Calories Consumed</th>
+              <th class="calories-consumed"></th>
+            </tr> 
+            <tr>
+              <th>Remaining Calories</th>
+              <th class="remaining-count"></th>
+            </tr> 
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="meal_category">
+      <label class="meal-type">Add Selected To
+        <button id='blue-oval'>Breakfast</button>
+        <button id='blue-oval'>Lunch</button>
+        <button id='blue-oval'>Snack</button>
+        <button id='blue-oval'>Dinner</button>
+      </label>
+    </div>
+    <div class="food-filter">
+      <section class="search-foods">
+        <label>Search by Name
+          <input>
+        </label>
+      </section>
+    </div>
+    <div class="all-foods">
+      <table id="food-list">
+        <thead>
+          <tr><th class="check"></th><th>Name</th><th>Calories</th></tr>
+        </thead>
+        <tbody id="diary-food-list">
         </tbody>
       </table>
     </div>
