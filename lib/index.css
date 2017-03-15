@@ -38,10 +38,6 @@ div.new-food {
   padding-top: 15%;
 }
 
-button#blue-oval.create-food {
-  width: 300px;
-}
-
 .food-total {
   display: flex;
   justify-content: stretch;

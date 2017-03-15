@@ -15,7 +15,7 @@
   border:none;
 }
 
-button#blue-oval {
+button.blue-oval {
   background-color: #56CCF2;
   border-radius: 2em;
   text-align:center;
