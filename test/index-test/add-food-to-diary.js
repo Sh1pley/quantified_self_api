@@ -1,6 +1,14 @@
+function reloadPageOnce() {
+  for (var i = 0; i < 1; i++) {
+    window.onload=initReload;function initReload() {
+      window.location.reload();
+    }
+  }
+}
 describe('Select food and add to meals', function() {
   var $;
   var localStorage;
+
 
   before(function(){
     $ = document.getElementById("foods-frame").contentWindow.$;
@@ -56,6 +64,14 @@ describe('Select food and add to meals', function() {
       $('#dinner').click();
       var dinnerRow = $('#dinner-list tr.food-row');
       assert.equal(dinnerRow.length > 0, true)
+    });
+
+    it('can persist tables after reload', function(){
+      var tableRows = $('tr.food-row');
+      assert.equal(tableRows.length > 0, true)
+      reloadPageOnce();
+      var newTableRows = $('tr.food-row');
+      assert.equal(tableRows.length, newTableRows.length)
     });
   });
 });
