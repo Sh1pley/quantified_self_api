@@ -1,17 +1,26 @@
-# Quantified Self Starter Kit (Old School)
+# Quantified Self
+Jessie and Kyle's Quantified Self project for Turing.
 
-This starter kit differs from the other QS starter kit, in that it does not use a build tool (webkit). Old school baby!
+Calorie tracker that you can use to create foods, edit foods, add foods to meals, and filter foods by name.
 
-![http://i.giphy.com/anjRJ4nv9WJzO.gif](http://i.giphy.com/anjRJ4nv9WJzO.gif)
+[Project Spec](http://backend.turing.io/module4/projects/quantified-self/quantified-self)
+[Production Site](https://kheppenstall.github.io/quantified_self/)
 
-Just clone it down, and start editing HTML/JS/CSS.
+Tech Stack: Javascript, JQuery, Mocha, Chai, Asdf, Github Pages
 
-## Running Tests
+## Getting Started
 
-This project uses [Mocha](https://mochajs.org/) as the test runner, [Chai](http://chaijs.com/) for assertions, and [jQuery](https://jquery.com/) for integration test like functionality.
+Follow these steps from the command line to get the project on your local machine:
+1. `git clone https://github.com/kheppenstall/quantified_self.git`
+1. `cd quantified-self-os`
+1. `open index.html`
 
-To run your tests, run the following from your terminal
+## Running the Tests
 
-`$ open test/foods-test.html`
-
-This will open and execute the tests in your browser
+Follow these steps (after running the steps above) from the command line to run our test suite:
+1. `brew install node` (unless you already have node installed on your machine)
+1. `npm install -g mocha`
+1. `npm install -g asdf`
+1. `asdf`
+1. Visit `localhost:5000/test/foods-test.html` in your browser to see tests for foods.html
+1. Visit `localhost:5000/test/index-test.html` in your browser to see tests for index.html
