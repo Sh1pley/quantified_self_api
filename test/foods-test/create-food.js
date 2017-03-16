@@ -45,8 +45,6 @@ describe('#create-form', function() {
   context('adding a food', function() {
 
     beforeEach(function() {
-      console.log(localStorage.clear());
-      console.log(localStorage);
       food = {name: 'Banana', calories: '35'}
       $('#name-field input').val(food.name);
       $('#calories-field input').val(food.calories);
@@ -55,7 +53,8 @@ describe('#create-form', function() {
 
     it('will save the food to local storage', function() {
       var savedFoods = JSON.parse(localStorage.getItem('foodList'));
-      var savedFood = savedFoods[0];
+      var lastIndex = savedFoods.length - 1;
+      var savedFood = savedFoods[lastIndex];
 
       assert.isArray(savedFoods);
       assert.isObject(savedFood);
