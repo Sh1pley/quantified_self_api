@@ -62,7 +62,7 @@ div.new-food {
   text-align: center;
 }
 
-button.back {
+button#back {
   width: 0;
   height: 0;
   padding: 0;
@@ -73,7 +73,7 @@ button.back {
   border-bottom: 30px solid transparent;
 }
 
-button.forward {
+button#forward {
   width: 0;
   height: 0;
   padding: 0;
