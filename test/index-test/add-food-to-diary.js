@@ -1,14 +1,6 @@
-function reloadPageOnce() {
-  for (var i = 0; i < 1; i++) {
-    window.onload=initReload;function initReload() {
-      window.location.reload();
-    }
-  }
-}
 describe('Select food and add to meals', function() {
   var $;
   var localStorage;
-
 
   before(function(){
     $ = document.getElementById("foods-frame").contentWindow.$;
@@ -75,3 +67,11 @@ describe('Select food and add to meals', function() {
     });
   });
 });
+
+function reloadPageOnce() {
+  for (var i = 0; i < 1; i++) {
+    window.onload=initReload;function initReload() {
+      window.location.reload();
+    }
+  }
+}
