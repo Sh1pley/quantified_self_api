@@ -4,13 +4,16 @@
   <script src="./vendor/mocha.js"></script>
   <script src="./vendor/chai.js"></script>
   <script src="../lib/food_items.js"></script>
+  <script src="../lib/foods_list.js"></script>
   <script>
     mocha.setup('bdd');
     window.assert = chai.assert;
     window.onload = function() { mocha.run(); };
   </script>
   <script src="./foods-test/create-food.js"></script>
+  <script src="./foods-test/remove-food.js"></script>
   <script src="./foods-test/food-items.js"></script>
+
   <style>
     iframe {
       height:1px;
