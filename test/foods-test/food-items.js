@@ -5,6 +5,7 @@ describe('Food items', function() {
   })
 
   beforeEach(function() {
+    window.localStorage.clear();
     foods = [];
   })
 
@@ -22,8 +23,7 @@ describe('Food items', function() {
   context('#setFoods', function() {
     it('will initialize foods an empty based on local storage', function() {
       setFoods();
-      var expectedFoods = JSON.parse(localStorage.getItem('foodList'));
-      assert.deepEqual(foods, expectedFoods);
+      assert.deepEqual(foods, []);
     });
   });
 

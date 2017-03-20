@@ -1,3 +1,8 @@
+function getPage(page, onLoad) {
+  document.getElementById('foods-frame').src = page;
+  document.getElementById('foods-frame').onload = onLoad;
+}
+
 describe('#create-form', function() {
   var $;
   var localStorage;
@@ -11,6 +16,7 @@ describe('#create-form', function() {
     $('#food-list tbody').html('');
     $('#create-form input').val('');
     $('.validation-error').html('');
+    window.localStorage.clear();
   });
 
   context('validations', function() {
@@ -67,6 +73,20 @@ describe('#create-form', function() {
 
       assert.equal(displayedName, food.name);
       assert.equal(displayedCalories, food.calories);
+    });
+
+    it('will persist across pages', function(done) {
+      getPage('../index.html', function() {
+        $ = document.getElementById("foods-frame").contentWindow.$;
+
+        var displayedCalories = $('table#diary-food-list .food-calories').first().text();
+        var displayedName = $('table#diary-food-list .food-name').first().text();
+
+        assert.equal(displayedName, food.name);
+        assert.equal(displayedCalories, food.calories);
+
+        done();
+      })
     });
   });
 });
