@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const environment = process.env.NODE_ENV || 'development'
+const configuration = require('./knexfile')[environment]
+const database = require('knex')(configuration)
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Quantified Self'
@@ -13,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/foods', (req, res) => {
-  res.send(app.locals.foods)
+  database.raw('SELECT * FROM foods').then(data => res.json(data.rows))
 })
 
 app.post('/api/foods', (req, res) => {
@@ -27,11 +30,14 @@ app.post('/api/foods', (req, res) => {
   return res.status(422).send({ error: 'Needs name and calories' })
 })
 
-app.get('/api/foods/:name', (req, res) => {
-  const name = req.params.name
-  const calories = app.locals.foods[name]
-  if (!calories) { return res.sendStatus(404) }
-  res.json({name, calories})
+app.get('/api/foods/:id', (req, res) => {
+  const id = req.params.id
+  database.raw('SELECT * FROM foods WHERE id = ?', [id])
+  .then(data => {
+    console.log(data.rows[0])
+    if (!data.rowCount) { return res.sendStatus(404) }
+    res.json(data.rows[0])
+  })
 })
 
 app.put('/api/foods/:name', (req, res) => {

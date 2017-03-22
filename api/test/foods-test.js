@@ -1,6 +1,16 @@
 const app = require('../server')
 const assert = require('chai').assert
 const request = require('request')
+const environment = process.env.NODE_ENV || 'development'
+const configuration = require('../knexfile')[environment]
+const database = require('knex')(configuration)
+
+const expectedFood = {
+  "calories": 10,
+  "id": 1,
+  "name": "Banana"
+}
+
 
 describe('Foods API', () => {
   before((done) => {
@@ -20,23 +30,41 @@ describe('Foods API', () => {
     assert(app)
   })
 
-  describe('GET to /api/foods', () => {
-    beforeEach(() => { app.locals.foods = { grape: 5, orange: 15 } })
+  afterEach((done) => {
+    database.raw('TRUNCATE foods RESTART IDENTITY')
+    .then(() => done());
+  })
 
+  beforeEach((done) => {
+    database.raw(
+      'INSERT INTO foods (name, calories, created_at) VALUES (?, ?, ?)',
+      ['Banana', 10, new Date]
+    ).then(() => done())
+    .catch(done);
+  })
+
+  describe('GET to /api/foods', () => {
+  
     it('returns list of all foods', (done) => {
       this.request.get('/api/foods', (err, res) => {
         if (err) { done(err) }
+        const parsedFoods = JSON.parse(res.body)
+        const parsedFood = parsedFoods[0]
+
         assert.equal(res.statusCode, 200)
-        assert.deepEqual(JSON.parse(res.body), app.locals.foods)
+        assert.typeOf(parsedFoods, 'array')
+        assert.equal(parsedFood.name, expectedFood.name)
+        assert.equal(parsedFood.calories, expectedFood.calories)
+        assert.equal(parsedFood.id, expectedFood.id)
         done()
       })
     })
   })
 
-  describe('GET to /api/foods/:name', () => {
-    beforeEach(() => { app.locals.foods = { grape: 5} })
+  describe('GET to /api/foods/:id', () => {
+
     it('return 404 if resource not found', (done) => {
-      this.request.get('/api/foods/invalidfood', (err, res) => {
+      this.request.get('/api/foods/1000', (err, res) => {
         if (err) { done(err) }
         assert.equal(res.statusCode, 404)
         done()
@@ -44,11 +72,15 @@ describe('Foods API', () => {
     })
 
     it('returns name and calories if food is found', (done) => {
-      this.request.get('/api/foods/grape', (err, res) => {
+      this.request.get('/api/foods/1', (err, res) => {
         if (err) { done(err) }
+        const parsedFood = JSON.parse(res.body)
+
         assert.equal(res.statusCode, 200)
-        assert.include(res.body, 'grape')
-        assert.include(res.body, 5)
+        assert.typeOf(parsedFood, 'object')
+        assert.equal(parsedFood.name, expectedFood.name)
+        assert.equal(parsedFood.calories, expectedFood.calories)
+        assert.equal(parsedFood.id, expectedFood.id)
         done()
       })
     })
