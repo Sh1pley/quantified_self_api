@@ -34,23 +34,43 @@ app.get('/api/foods/:id', (req, res) => {
   const id = req.params.id
   database.raw('SELECT * FROM foods WHERE id = ?', [id])
   .then(data => {
-    console.log(data.rows[0])
     if (!data.rowCount) { return res.sendStatus(404) }
     res.json(data.rows[0])
   })
 })
 
-app.put('/api/foods/:name', (req, res) => {
-  const oldName = req.params.name
-  const calories = req.body.calories
-  const newName = req.body.name
-  if (calories && app.locals.foods[oldName]) {
-    if (oldName != newName) { delete app.locals.foods[oldName] }
-    app.locals.foods[newName] = calories
-    return  res.json({newName, calories})
+app.put('/api/foods/:id', (req, res) => {
+  const id = req.params.id
+  console.log(getFood(id))
+  const calories = req.body.calories 
+  const name = req.body.name
+  // name = 'hi'
+  // calories = 10
+  if (calories) {
+    database.raw(
+      `UPDATE foods
+      SET calories = ?, name = ?
+      WHERE id = ?`,
+      [calories, name, id]
+    )
+    .then( () => {
+      database.raw(`SELECT * FROM foods WHERE id = ?`, [id])
+      .then(data => res.json(data.rows[0]))
+    })
   }
-  return res.status(404).send({ error: `Could not find food ${oldName}` })
 })
+    
+  
+function getFood(id) {
+  database.raw(`SELECT * FROM foods WHERE id = ?`, [id])
+}
+
+//   if (calories && app.locals.foods[oldName]) {
+//     if (oldName != newName) { delete app.locals.foods[oldName] }
+//     return  res.json({newName, calories})
+//   }
+//   return res.status(404).send({ error: `Could not find food ${oldName}` })
+// })
 
 app.delete('/api/foods/:name', (req, res) => {
   const name = req.params.name
