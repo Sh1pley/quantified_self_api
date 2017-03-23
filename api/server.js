@@ -19,39 +19,58 @@ app.get('/api/foods', (req, res) => {
   database.raw('SELECT * FROM foods').then(data => res.json(data.rows))
 })
 
+app.get('/api/foods/:id', (req, res) => {
+  const id = req.params.id
+  showFood(id, res)
+})
+
 app.post('/api/foods', (req, res) => {
   const calories = req.body.calories
   const name = req.body.name
-  if (app.locals.foods[name]) { return res.status(422).send(`${name} already exists!`)}
-  if (name && calories) {
-    app.locals.foods[name] = calories
-    return  res.status(201).json({name, calories})
-  }
-  return res.status(422).send({ error: 'Needs name and calories' })
-})
-
-app.get('/api/foods/:id', (req, res) => {
-  const id = req.params.id
-  database.raw('SELECT * FROM foods WHERE id = ?', [id])
-  .then(data => {
-    if (!data.rowCount) { return res.sendStatus(404) }
-    res.json(data.rows[0])
-  })
+  if (name && calories) { return createFood(name, calories, res) }
+  res.status(422).send({ error: 'Needs name and calories' })
 })
 
 app.put('/api/foods/:id', (req, res) => {
   const id = req.params.id
   const calories = req.body.calories 
   const name = req.body.name
-  
-  if (name && calories) { return updateNameCalories(id, name, calories, res) }
-  if (calories) { return updateCalories(id, calories, res) }
-  if (name) { return updateName(id, name, res) }
-  respondWith404(res, id)
+  updateFood(id, name, calories, res)
+})
+
+app.delete('/api/foods/:id', (req, res) => {
+  const id = req.params.id
+  deleteFood(id, res)
 })
 
 function respondWith404(res, id) {
   res.status(404).send({ error: `Could not find food with id ${id}` })
+}
+
+function respond(data, id, res) {
+  if (!data.rowCount) { return res.sendStatus(404) }
+  res.json(data.rows[0])
+}
+
+function showFood(id, res) {
+  database.raw('SELECT * FROM foods WHERE id = ?', id)
+  .then(data => respond(data, id, res))
+}
+
+function createFood(name, calories, res) {
+  database.raw(`INSERT INTO foods
+    (name, calories, created_at)
+    VALUES (?, ?, ?)
+    RETURNING id`,
+    [name, calories, new Date])
+  .then(data => database.raw('SELECT * FROM foods WHERE id = ?', data.rows[0].id))
+  .then(data => res.status(201).json(data))
+}
+
+function updateFood(id, name, calories, res) {
+  if (name && calories) { return updateNameCalories(id, name, calories, res) }
+  if (calories) { return updateCalories(id, calories, res) }
+  if (name) { return updateName(id, name, res) }
 }
 
 function updateNameCalories(id, name, calories, res) {
@@ -61,7 +80,7 @@ function updateNameCalories(id, name, calories, res) {
     WHERE id = ?`,
     [calories, name, id])
   .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
-  .then(data => res.json(data))
+  .then(data => respond(data, id, res))
 }
 
 function updateName(id, name, res) {
@@ -70,7 +89,7 @@ function updateName(id, name, res) {
     WHERE id = ?`,
     [name, id])
   .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
-  .then(data => res.json(data))
+  .then(data => respond(data, id, res))
 }
 
 function updateCalories(id, calories, res) {
@@ -79,17 +98,16 @@ function updateCalories(id, calories, res) {
     WHERE id = ?`,
     [calories, id])
   .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
-  .then(data => res.json(data))
+  .then(data => respond(data, id, res))
 }
 
-app.delete('/api/foods/:name', (req, res) => {
-  const name = req.params.name
-  if (app.locals.foods[name]) { 
-    delete app.locals.foods[name] 
-    return res.status(200).send(`${name} deleted.`)
-  }
-  return res.status(404).send({ error: `Could not find food ${name}` })
-})
+function deleteFood(id, res) {
+  database.raw('DELETE FROM foods WHERE id = ?', id)
+  .then(data => {
+    if (data.rowCount) { return res.status(200).send('Food deleted.') }
+    respondWith404(res, id)
+  })
+}
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {

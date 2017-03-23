@@ -89,7 +89,8 @@ describe('Foods API', () => {
   describe('PUT to /api/foods/:id', () => {
 
     it('return 404 if resource not found', (done) => {
-      this.request.put('/api/foods/1000', (err, res) => {
+      const food = {name: 'Grape', calories: 100}
+      this.request.put('/api/foods/1000', {form: food}, (err, res) => {
         if (err) { done(err) }
         assert.equal(res.statusCode, 404)
         done()
@@ -149,10 +150,9 @@ describe('Foods API', () => {
   })
 
   describe('DELETE to /api/foods', () => {
-    beforeEach(() => { app.locals.foods = { grape: 5} })
 
     it('return 404 if resource not found', (done) => {
-      this.request.delete('/api/foods/invalidfood', (err, res) => {
+      this.request.delete('/api/foods/1000', (err, res) => {
         if (err) { done(err) }
         assert.equal(res.statusCode, 404)
         done()
@@ -160,20 +160,18 @@ describe('Foods API', () => {
     })
 
     it('deletes food if food is present', (done) => {
-      this.request.delete('/api/foods/grape', (err, res) => {
-        if (err) { done(err) }
-        const foodCount = Object.keys(app.locals.foods).length
-        assert.equal(foodCount, 0)
-        done()
+      this.request.delete('/api/foods/1', (err, res) => {
+        database.raw('SELECT * FROM foods').then(data => {
+          assert.equal(res.statusCode, 200)
+          assert.equal(data.rowCount, 0)
+          assert.include(res.body, 'Food deleted.')
+          done()
+        })
       })
     })
   })
 
-
   describe('POST to /api/foods', () => {
-    beforeEach(() => {
-      app.locals.foods = {}
-    })
 
     it('does not return 404', (done) => {
       this.request.post('/api/foods', (err, res) => {
@@ -184,15 +182,20 @@ describe('Foods API', () => {
     })
 
     it('it receives and stores data', (done) => {
-      const food = {calories: 10, name: "banana"}
+      const food = {calories: 20, name: "Grape"}
 
       this.request.post('/api/foods', {form: food}, (err, res) => {
         if (err) { done(err) }
-        const foodCount = Object.keys(app.locals.foods).length
-        assert.equal(foodCount, 1)
-        assert.include(res.body, food.calories)
-        assert.include(res.body, food.name)
-        done()
+        database.raw('SELECT * FROM foods WHERE id = 2').then(data => {
+          const savedFood = data.rows[0]
+          assert.equal(res.statusCode, 201)
+          assert.equal(savedFood.name, food.name)
+          assert.equal(savedFood.calories, food.calories)
+          assert.equal(savedFood.id, 2)
+          assert.include(res.body, food.calories)
+          assert.include(res.body, food.name)
+          done()
+        })
       })
     })
 
@@ -201,10 +204,11 @@ describe('Foods API', () => {
 
       this.request.post('/api/foods', {form: invalidFood}, (err, res) => {
         if (err) { done(err) }
-        const foodCount = Object.keys(app.locals.foods).length
-        assert.equal(foodCount, 0)
-        assert.equal(res.statusCode, 422)
-        done()
+        database.raw('SELECT * FROM foods WHERE id = 2').then(data => {
+          assert.equal(res.statusCode, 422)
+          assert.equal(data.rowCount, 0)
+          done()
+        })
       })
     })
 
@@ -213,23 +217,11 @@ describe('Foods API', () => {
 
       this.request.post('/api/foods', {form: invalidFood}, (err, res) => {
         if (err) { done(err) }
-        const foodCount = Object.keys(app.locals.foods).length
-        assert.equal(foodCount, 0)
-        assert.equal(res.statusCode, 422)
-        done()
-      })
-    })
-
-    it('returns 422 if name is not unique', (done) => {
-      app.locals.foods["banana"] = 10
-      const food = {name: 'banana', calories: 100}
-      this.request.post('/api/foods', {form: food}, (err, res) => {
-        if (err) { done(err) }
-        const foodCount = Object.keys(app.locals.foods).length
-        assert.equal(foodCount, 1)
-        assert.include(res.body, "banana already exists!")
-        assert.equal(res.statusCode, 422)
-        done()
+        database.raw('SELECT * FROM foods WHERE id = 2').then(data => {
+          assert.equal(res.statusCode, 422)
+          assert.equal(data.rowCount, 0)
+          done()
+        })
       })
     })
   })
