@@ -1,9 +1,7 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const environment = process.env.NODE_ENV || 'development'
-const configuration = require('./knexfile')[environment]
-const database = require('knex')(configuration)
+const Food = require('./lib/models/food')
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Quantified Self'
@@ -16,18 +14,18 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/foods', (req, res) => {
-  database.raw('SELECT * FROM foods').then(data => res.json(data.rows))
+  Food.getAllFoods().then(data => res.json(data.rows))
 })
 
 app.get('/api/foods/:id', (req, res) => {
   const id = req.params.id
-  showFood(id, res)
+  showFoodAndRespond(id, res)
 })
 
 app.post('/api/foods', (req, res) => {
   const calories = req.body.calories
   const name = req.body.name
-  if (name && calories) { return createFood(name, calories, res) }
+  if (name && calories) { return createFoodAndRespond(name, calories, res) }
   res.status(422).send({ error: 'Needs name and calories' })
 })
 
@@ -35,12 +33,12 @@ app.put('/api/foods/:id', (req, res) => {
   const id = req.params.id
   const calories = req.body.calories 
   const name = req.body.name
-  updateFood(id, name, calories, res)
+  updateFoodAndRespond(id, name, calories, res)
 })
 
 app.delete('/api/foods/:id', (req, res) => {
   const id = req.params.id
-  deleteFood(id, res)
+  deleteFoodAndRespond(id, res)
 })
 
 function respondWith404(res, id) {
@@ -52,56 +50,39 @@ function respond(data, id, res) {
   res.json(data.rows[0])
 }
 
-function showFood(id, res) {
-  database.raw('SELECT * FROM foods WHERE id = ?', id)
+function showFoodAndRespond(id, res) {
+  Food.getFood(id)
   .then(data => respond(data, id, res))
 }
 
-function createFood(name, calories, res) {
-  database.raw(`INSERT INTO foods
-    (name, calories, created_at)
-    VALUES (?, ?, ?)
-    RETURNING *`,
-    [name, calories, new Date])
+function createFoodAndRespond(name, calories, res) {
+  Food.createFood(name, calories)
   .then(data => res.status(201).json(data))
 }
 
-function updateFood(id, name, calories, res) {
-  if (name && calories) { return updateNameCalories(id, name, calories, res) }
-  if (calories) { return updateCalories(id, calories, res) }
-  if (name) { return updateName(id, name, res) }
+function updateFoodAndRespond(id, name, calories, res) {
+  if (name && calories) { return updateNameCaloriesAndRespond(id, name, calories, res) }
+  if (calories) { return updateCaloriesAndRespond(id, calories, res) }
+  if (name) { return updateNameAndRespond(id, name, res) }
 }
 
-function updateNameCalories(id, name, calories, res) {
-  database.raw(`UPDATE foods
-    SET calories = ?,
-    name = ?
-    WHERE id = ?
-    RETURNING * `,
-    [calories, name, id])
+function updateNameCaloriesAndRespond(id, name, calories, res) {
+  Food.updateNameAndCalories(id, name, calories)
   .then(data => respond(data, id, res))
 }
 
-function updateName(id, name, res) {
-  database.raw(`UPDATE foods
-    SET name = ?
-    WHERE id = ?
-    RETURNING * `,
-    [name, id])
+function updateNameAndRespond(id, name, res) {
+  Food.updateName(id, name)
   .then(data => respond(data, id, res))
 }
 
-function updateCalories(id, calories, res) {
-  database.raw(`UPDATE foods
-    SET calories = ?
-    WHERE id = ?
-    RETURNING * `,
-    [calories, id])
+function updateCaloriesAndRespond(id, calories, res) {
+  Food.updateCalories(id, calories)
   .then(data => respond(data, id, res))
 }
 
-function deleteFood(id, res) {
-  database.raw('DELETE FROM foods WHERE id = ?', id)
+function deleteFoodAndRespond(id, res) {
+  Food.deleteFood(id)
   .then(data => {
     if (data.rowCount) { return res.status(200).send('Food deleted.') }
     respondWith404(res, id)
