@@ -16,7 +16,7 @@ We were challenged with creating a server and database less webpage that mimicke
 
 * ### Knex
   * together with pg serves up our actual relational DB
-  
+
 * ### JQuery
   * JQuery used as our entry level crutch into JavaScript
 
@@ -33,7 +33,11 @@ We were challenged with creating a server and database less webpage that mimicke
     * allows updating a food items name or calories ( will be immediately reflected on page, and update asynchronousy to the database )
   * DELETE to /api/foods/:id
     * allows deleting a food from the database ( immediately reflected on page )
-
+### Current Status
+  Project at this point is an almost perfect split between using a Node/Express server and mimicked router to serve CRUD functions to Foods.html.
+  Split down the center is Index.html, which still survives with full functions serving and storing data in localStorage.
+  This was a fun stopping point to compare what is do-able from either side.
+  
 ### Future additions may include:
   * adding seperate resource route for storying diary meal tables
   * adding log in / log out functionality
