@@ -61,9 +61,8 @@ function createFood(name, calories, res) {
   database.raw(`INSERT INTO foods
     (name, calories, created_at)
     VALUES (?, ?, ?)
-    RETURNING id`,
+    RETURNING *`,
     [name, calories, new Date])
-  .then(data => database.raw('SELECT * FROM foods WHERE id = ?', data.rows[0].id))
   .then(data => res.status(201).json(data))
 }
 
@@ -77,27 +76,27 @@ function updateNameCalories(id, name, calories, res) {
   database.raw(`UPDATE foods
     SET calories = ?,
     name = ?
-    WHERE id = ?`,
+    WHERE id = ?
+    RETURNING * `,
     [calories, name, id])
-  .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
   .then(data => respond(data, id, res))
 }
 
 function updateName(id, name, res) {
   database.raw(`UPDATE foods
     SET name = ?
-    WHERE id = ?`,
+    WHERE id = ?
+    RETURNING * `,
     [name, id])
-  .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
   .then(data => respond(data, id, res))
 }
 
 function updateCalories(id, calories, res) {
   database.raw(`UPDATE foods
     SET calories = ?
-    WHERE id = ?`,
+    WHERE id = ?
+    RETURNING * `,
     [calories, id])
-  .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
   .then(data => respond(data, id, res))
 }
 
