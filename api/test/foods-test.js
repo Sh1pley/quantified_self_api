@@ -1,16 +1,14 @@
 const app = require('../server')
 const assert = require('chai').assert
 const request = require('request')
-const environment = process.env.NODE_ENV || 'development'
-const configuration = require('../knexfile')[environment]
-const database = require('knex')(configuration)
+
+const Food = require('../lib/models/food')
 
 const expectedFood = {
   "calories": 10,
   "id": 1,
   "name": "Banana"
 }
-
 
 describe('Foods API', () => {
   before((done) => {
@@ -31,15 +29,13 @@ describe('Foods API', () => {
   })
 
   afterEach((done) => {
-    database.raw('TRUNCATE foods RESTART IDENTITY')
+    Food.clear()
     .then(() => done());
   })
 
   beforeEach((done) => {
-    database.raw(
-      'INSERT INTO foods (name, calories, created_at) VALUES (?, ?, ?)',
-      ['Banana', 10, new Date]
-    ).then(() => done())
+    Food.create('Banana', 10)
+    .then(() => done())
     .catch(done);
   })
 
@@ -101,7 +97,7 @@ describe('Foods API', () => {
       const food = {calories: 100}
       this.request.put('/api/foods/1', {form: food}, (err, res) => {
         if (err) { done(err) }
-        database.raw('SELECT * FROM foods WHERE id = 1').then(data => {
+        Food.find(1).then(data => {
           const savedFood = data.rows[0]
           assert.equal(res.statusCode, 200)
           assert.equal(savedFood.name, expectedFood.name)
@@ -118,7 +114,7 @@ describe('Foods API', () => {
       const food = {name: 'Grape'}
       this.request.put('/api/foods/1', {form: food}, (err, res) => {
         if (err) { done(err) }
-        database.raw('SELECT * FROM foods WHERE id = 1').then(data => {
+        Food.find(1).then(data => {
           const savedFood = data.rows[0]
           assert.equal(res.statusCode, 200)
           assert.equal(savedFood.name, food.name)
@@ -135,7 +131,7 @@ describe('Foods API', () => {
       const food = {name: 'Grape', calories: 100}
       this.request.put('/api/foods/1', {form: food}, (err, res) => {
         if (err) { done(err) }
-        database.raw('SELECT * FROM foods WHERE id = 1').then(data => {
+        Food.find(1).then(data => {
           const savedFood = data.rows[0]
           assert.equal(res.statusCode, 200)
           assert.equal(savedFood.name, food.name)
@@ -161,7 +157,7 @@ describe('Foods API', () => {
 
     it('deletes food if food is present', (done) => {
       this.request.delete('/api/foods/1', (err, res) => {
-        database.raw('SELECT * FROM foods').then(data => {
+        Food.all().then(data => {
           assert.equal(res.statusCode, 200)
           assert.equal(data.rowCount, 0)
           assert.include(res.body, 'Food deleted.')
@@ -186,7 +182,7 @@ describe('Foods API', () => {
 
       this.request.post('/api/foods', {form: food}, (err, res) => {
         if (err) { done(err) }
-        database.raw('SELECT * FROM foods WHERE id = 2').then(data => {
+        Food.find(2).then(data => {
           const savedFood = data.rows[0]
           assert.equal(res.statusCode, 201)
           assert.equal(savedFood.name, food.name)
@@ -204,7 +200,7 @@ describe('Foods API', () => {
 
       this.request.post('/api/foods', {form: invalidFood}, (err, res) => {
         if (err) { done(err) }
-        database.raw('SELECT * FROM foods WHERE id = 2').then(data => {
+        Food.find(2).then(data => {
           assert.equal(res.statusCode, 422)
           assert.equal(data.rowCount, 0)
           done()
@@ -217,7 +213,7 @@ describe('Foods API', () => {
 
       this.request.post('/api/foods', {form: invalidFood}, (err, res) => {
         if (err) { done(err) }
-        database.raw('SELECT * FROM foods WHERE id = 2').then(data => {
+        Food.find(2).then(data => {
           assert.equal(res.statusCode, 422)
           assert.equal(data.rowCount, 0)
           done()
