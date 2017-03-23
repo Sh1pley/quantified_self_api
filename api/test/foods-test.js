@@ -88,13 +88,13 @@ describe('Foods API', () => {
 
   describe('PUT to /api/foods/:id', () => {
 
-    // it('return 404 if resource not found', (done) => {
-    //   this.request.put('/api/foods/1000', (err, res) => {
-    //     if (err) { done(err) }
-    //     assert.equal(res.statusCode, 404)
-    //     done()
-    //   })
-    // })
+    it('return 404 if resource not found', (done) => {
+      this.request.put('/api/foods/1000', (err, res) => {
+        if (err) { done(err) }
+        assert.equal(res.statusCode, 404)
+        done()
+      })
+    })
 
     it('it receives calories and updates data', (done) => {
       const food = {calories: 100}
@@ -102,7 +102,7 @@ describe('Foods API', () => {
         if (err) { done(err) }
         database.raw('SELECT * FROM foods WHERE id = 1').then(data => {
           const savedFood = data.rows[0]
-          // assert.equal(res.statusCode, 200)
+          assert.equal(res.statusCode, 200)
           assert.equal(savedFood.name, expectedFood.name)
           assert.equal(savedFood.calories, 100)
           assert.equal(savedFood.id, expectedFood.id)
@@ -119,11 +119,28 @@ describe('Foods API', () => {
         if (err) { done(err) }
         database.raw('SELECT * FROM foods WHERE id = 1').then(data => {
           const savedFood = data.rows[0]
-          // assert.equal(res.statusCode, 200)
+          assert.equal(res.statusCode, 200)
           assert.equal(savedFood.name, food.name)
-          assert.equal(savedFood.calories, 100)
+          assert.equal(savedFood.calories, expectedFood.calories)
           assert.equal(savedFood.id, expectedFood.id)
           assert.include(res.body, expectedFood.calories)
+          assert.include(res.body, food.name)
+          done()
+        })
+      })
+    })
+
+    it('it receives name and calories and updates data', (done) => {
+      const food = {name: 'Grape', calories: 100}
+      this.request.put('/api/foods/1', {form: food}, (err, res) => {
+        if (err) { done(err) }
+        database.raw('SELECT * FROM foods WHERE id = 1').then(data => {
+          const savedFood = data.rows[0]
+          assert.equal(res.statusCode, 200)
+          assert.equal(savedFood.name, food.name)
+          assert.equal(savedFood.calories, food.calories)
+          assert.equal(savedFood.id, expectedFood.id)
+          assert.include(res.body, food.calories)
           assert.include(res.body, food.name)
           done()
         })

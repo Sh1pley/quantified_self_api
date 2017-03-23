@@ -41,36 +41,46 @@ app.get('/api/foods/:id', (req, res) => {
 
 app.put('/api/foods/:id', (req, res) => {
   const id = req.params.id
-  console.log(getFood(id))
   const calories = req.body.calories 
   const name = req.body.name
-  // name = 'hi'
-  // calories = 10
-  if (calories) {
-    database.raw(
-      `UPDATE foods
-      SET calories = ?, name = ?
-      WHERE id = ?`,
-      [calories, name, id]
-    )
-    .then( () => {
-      database.raw(`SELECT * FROM foods WHERE id = ?`, [id])
-      .then(data => res.json(data.rows[0]))
-    })
-  }
-})
-    
   
-function getFood(id) {
-  database.raw(`SELECT * FROM foods WHERE id = ?`, [id])
+  if (name && calories) { return updateNameCalories(id, name, calories, res) }
+  if (calories) { return updateCalories(id, calories, res) }
+  if (name) { return updateName(id, name, res) }
+  respondWith404(res, id)
+})
+
+function respondWith404(res, id) {
+  res.status(404).send({ error: `Could not find food with id ${id}` })
 }
 
-//   if (calories && app.locals.foods[oldName]) {
-//     if (oldName != newName) { delete app.locals.foods[oldName] }
-//     return  res.json({newName, calories})
-//   }
-//   return res.status(404).send({ error: `Could not find food ${oldName}` })
-// })
+function updateNameCalories(id, name, calories, res) {
+  database.raw(`UPDATE foods
+    SET calories = ?,
+    name = ?
+    WHERE id = ?`,
+    [calories, name, id])
+  .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
+  .then(data => res.json(data))
+}
+
+function updateName(id, name, res) {
+  database.raw(`UPDATE foods
+    SET name = ?
+    WHERE id = ?`,
+    [name, id])
+  .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
+  .then(data => res.json(data))
+}
+
+function updateCalories(id, calories, res) {
+  database.raw(`UPDATE foods
+    SET calories = ?
+    WHERE id = ?`,
+    [calories, id])
+  .then( () => database.raw('SELECT * FROM foods WHERE id = ?', id))
+  .then(data => res.json(data))
+}
 
 app.delete('/api/foods/:name', (req, res) => {
   const name = req.params.name
