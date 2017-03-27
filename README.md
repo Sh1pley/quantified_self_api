@@ -1,8 +1,8 @@
-# Node / Express API
-#### This serves up a DB for our ( [Kyle](https://github.com/kheppenstall) and I ) pre-existing JS project
+# Node / Express API for Quantified Self
+This project provides a backend (database and internal API) for our ( [Kyle](https://github.com/kheppenstall) and I ) calorie tracker project [quantified-self](https://github.com/kheppenstall/quantified_self).
 
 ## Project Scope
-We were challenged with creating a server and database less webpage that mimicked what we had been doing with Ruby, Rails and Postgres for the last 5 months. That project lives here [Quantified Self](https://kheppenstall.github.io/quantified_self/)
+We were challenged with creating a server and database less webpage that mimicked what we had been doing with Ruby, Rails and Postgres for the last 5 months. That production site lives here [Quantified Self](https://kheppenstall.github.io/quantified_self/).
 
 ### This API was our second challenge of ripping out what we were using localStorage for and replacing it with an API.
 
@@ -24,7 +24,7 @@ We were challenged with creating a server and database less webpage that mimicke
 ### This API offers up a resource for Foods
 * ### Routes include:
   * GET to /api/foods
-    * will reetrieve the index, and all foods in JSON
+    * will retrieve the index, and all foods in JSON
   * POST to /api/foods
     * allows creating a food with parameters of { name: "string", calories: integer }
   * GET /api/foods/:id
@@ -34,9 +34,7 @@ We were challenged with creating a server and database less webpage that mimicke
   * DELETE to /api/foods/:id
     * allows deleting a food from the database ( immediately reflected on page )
 ### Current Status
-  Project at this point is an almost perfect split between using a Node/Express server and mimicked router to serve CRUD functions to Foods.html.
-  Split down the center is Index.html, which still survives with full functions serving and storing data in localStorage.
-  This was a fun stopping point to compare what is do-able from either side.
+Project at this point is an almost perfect split between using a Node/Express server and mimicked router to serve CRUD functions to Foods.html. Split down the center is Index.html, which still survives with full functions serving and storing data in localStorage. This was a fun stopping point to compare what is do-able from either side.
   
 ### Future additions may include:
   * adding seperate resource route for storying diary meal tables
